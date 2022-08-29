@@ -5,16 +5,16 @@ class SqlController {
       host: "localhost",
       user: "root",
       password: "123123",
-      database: "db_students",
+      database: "students_db",
     });
 
     connection.connect();
     return connection;
   }
 
-  getLoginUser() {
+  getViewLogin() {
     return new Promise((resolve, reject) => {
-      const sql = `select * from view_login_students`;
+      const sql = `select * from managerLogin`;
       this.connectionDatabase().query(sql, (err, result) => {
         if (err) {
           reject(err.message);
@@ -23,31 +23,9 @@ class SqlController {
       });
     });
   }
-  getLoginAdmin() {
+  getViewStudents() {
     return new Promise((resolve, reject) => {
-      const sql = `select * from view_login_admin`;
-      this.connectionDatabase().query(sql, (err, result) => {
-        if (err) {
-          reject(err.message);
-        }
-        resolve(result);
-      });
-    });
-  }
-  getDbViewStudent() {
-    return new Promise((resolve, reject) => {
-      const sql = `select * from info_students`;
-      this.connectionDatabase().query(sql, (err, result) => {
-        if (err) {
-          reject(err.message);
-        }
-        resolve(result);
-      });
-    });
-  }
-  getDbViewScores(id) {
-    return new Promise((resolve, reject) => {
-      const sql = `select * from view_students_score where id_students = ${id}`;
+      const sql = `select * from managerStudents`;
       this.connectionDatabase().query(sql, (err, result) => {
         if (err) {
           reject(err.message);

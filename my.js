@@ -25,12 +25,14 @@ const path = [
   "./src/views/login.html",
   "./src/views/students.html",
   "./src/views/manager.html",
+  "./src/views/details.html",
 ];
 
-const urlName = ["/", "/home", "/admin", "/users"];
+const urlName = ["/", "/details", "/delete", "/admin", "/users"];
 const server = http.createServer((req, res) => {
   let urlPathName = url.parse(req.url).pathname;
   const method = req.method;
+  let index = url.parse(req.url).query;
   const filesDefences = urlPathName.match(
     /\.js|\.css|\.png|\.svg|\.jpg|\.ttf|\.woff|\.woff2|\.eot/
   );
@@ -47,11 +49,11 @@ const server = http.createServer((req, res) => {
           manager.login(req, res, path[1], path[2]);
         }
         break;
-      case "/admin":
-        manager.viewAdmin(req, res, path[2]);
+      case urlName[2]:
+        manager.deleteStudents(req, res, index);
         break;
-      case "/users":
-        manager.viewUsers(req, res, path[2]);
+      case urlName[1]:
+        manager.viewUsers(req, res, path[3], index - 1);
         break;
     }
   }

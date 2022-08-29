@@ -39,16 +39,17 @@ class ManagerController {
   }
   async login(req, res, pathUser, pathAdmin) {
     let dataForm = await this.getDataReq(req, res);
-    let userLogin = await mySql.getLoginUser();
-    let dataLogin = userLogin.concat(await mySql.getLoginAdmin());
+    let dataViewLogin = await mySql.getViewLogin();
     let role = -1;
     let idStudent = -1;
-    dataLogin.forEach((element, index) => {
+    dataViewLogin.forEach((element, index) => {
       if (dataForm.users == element.users && dataForm.pass == element.pass) {
         if (element.role == 1) {
           this.viewAdmin(req, res, pathAdmin);
+          console.log("check 2");
         } else {
           idStudent = index;
+          console.log(idStudent);
           this.viewUsers(req, res, pathUser, idStudent);
         }
       }
@@ -57,41 +58,60 @@ class ManagerController {
 
   async viewAdmin(req, res, pathAdmin) {
     let html = "";
-    let dbViewStudnet = await mySql.getDbViewStudent();
-    dbViewStudnet.forEach((element, index) => {
+    let viewMangerStudents = await mySql.getViewStudents();
+    viewMangerStudents.forEach((element, index) => {
+      let classicfy = "";
+      if (element.avg <= 5) {
+        classicfy = "Kém";
+      } else if (element.avg >= 5 && element.avg <= 7) {
+        classicfy = "Khá";
+      } else {
+        classicfy = "Giỏi";
+      }
       html += `
             <tr>
-            <td>${index + 1}</td>
-            <td>${element.name_students}</td>
-            <td>${element.age_students}</td>
-            <td>${element.name_class}</td>
-            <td>Xếp loại</td>
+            <td>${element.id}</td>
+            <td>${element.name}</td>
+            <td>${element.age}</td>
+            <td>${element.address}</td>
+            <td>${classicfy}</td>
+            <td><a href="/details?${element.id}"><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
+            <td><a href="/delete?${element.id}"><button class="btn-fromManager" type="submit">Xóa</button></a></td>
+            <td><a href="/edit?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
             </tr>
             `;
     });
     this.getTemplateLogin(req, res, pathAdmin, html);
-    console.log("check view Admin");
   }
   async viewUsers(req, res, pathAdmin, id) {
     let html = "";
-    let dbViewStudent = await mySql.getDbViewScores(id);
-    dbViewStudent.forEach((element, index) => {
-      let avg =
-        (parseFloat(element.toan) +
-          parseFloat(element.ly) +
-          parseFloat(element.hoa)) /
-        3;
-
-      html += `
-            <tr>
-            <td>${element.toan}</td>
-            <td>${element.ly}</td>
-            <td>${element.hoa}</td>
-            <td>${avg.toFixed(1)}</td>
-            </tr>
-            `;
-    });
+    let viewMangerStudents = await mySql.getViewStudents();
+    let classicfy = "";
+    let scoreAvg = Math.floor(viewMangerStudents[id].avg);
+    if (scoreAvg <= 5) {
+      classicfy = "Kém";
+    } else if (scoreAvg >= 5 && scoreAvg <= 7) {
+      classicfy = "Khá";
+    } else {
+      classicfy = "Giỏi";
+    }
+    html += `
+              <tr>
+              <td>${viewMangerStudents[id].name}</td>
+              <td>${viewMangerStudents[id].math}</td>
+              <td>${viewMangerStudents[id].physic}</td>
+              <td>${viewMangerStudents[id].chemistry}</td>
+              <td>${viewMangerStudents[id].avg}</td>
+              <td>${classicfy}</td>
+              </tr>
+              `;
     this.getTemplateLogin(req, res, pathAdmin, html);
+  }
+  async deleteStudents(req, res, index) {
+    let viewMangerStudents = await mySql.getViewStudents();
+    viewMangerStudents.splice(index, 1);
+    res.writeHead(301, {location: "/admin"});
+    res.end();
   }
 }
 

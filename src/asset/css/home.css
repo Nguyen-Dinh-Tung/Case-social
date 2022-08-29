@@ -19,7 +19,6 @@
 .score{
   display: flex;
   justify-content: center;
-  width: 800px;
   height: 100%;
   flex-direction: column;
   margin: auto;
@@ -29,7 +28,7 @@
 
 .subject ,.subject-name {
   background-color: aquamarine;
-  width: 200px;
+  width: 200px ;
   height: 40px;
 }
 .subject{
@@ -57,14 +56,22 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 200px;
+  width: calc(100%/7);
   height: 68px;
   font-size: 22px;
   background-color: rgb(49, 116, 116);
   border-radius: 6px;
   color: white;
 }
-.btn-primary:hover{
+.btn-primary:hover ,.btn-fromManager:hover{
   cursor: pointer;
   background-color: rgb(121, 121, 103);
+}
+.btn-fromManager{
+  background-color: rgb(49, 116, 116);
+  width: 100%;
+  height: 100%;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
