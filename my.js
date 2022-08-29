@@ -23,11 +23,11 @@ let mimeTypes = {
 };
 const path = [
   "./src/views/login.html",
-  "./src/views/home.html",
+  "./src/views/students.html",
   "./src/views/manager.html",
 ];
 
-const urlName = ["/login", "/home", "/manager"];
+const urlName = ["/", "/home", "/admin", "/users"];
 const server = http.createServer((req, res) => {
   let urlPathName = url.parse(req.url).pathname;
   const method = req.method;
@@ -44,8 +44,14 @@ const server = http.createServer((req, res) => {
         if (method == "GET") {
           manager.getTemplate(req, res, path[0]);
         } else {
-          manager.test();
+          manager.login(req, res, path[1], path[2]);
         }
+        break;
+      case "/admin":
+        manager.viewAdmin(req, res, path[2]);
+        break;
+      case "/users":
+        manager.viewUsers(req, res, path[2]);
         break;
     }
   }
