@@ -56,5 +56,26 @@ class SqlController {
       });
     });
   }
+  editDataLogin(data, index) {
+    const sql = `update login set users = "${data.users}" , pass = "${data.password}" where id = ${index}`;
+    this.connectionDatabase().query(sql, (err) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      console.log("Update success");
+    });
+  }
+  // deleteDataLogin(index) {
+  //   const sql = `delete from login where id = ${index}`;
+  //   this.connectionDatabase().query(sql, (err) => {
+  //     if (err) {
+  //       throw new Error(err.message);
+  //     }
+  //     console.log("Update success");
+  //   });
+  // }
+  createNewInfoStudents(data) {
+    const sql = `insert into students (name , age , address) values ('${data.name}' , ${data.age} , '${data.address}')`;
+  }
 }
 module.exports = SqlController;

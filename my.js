@@ -26,8 +26,17 @@ const path = [
   "./src/views/manager.html",
   "./src/views/details.html",
   "./src/views/controller.html",
+  "./src/views/create.html",
 ];
-const urlName = ["/", "/admin", "/details", "/delete", "/controller"];
+const urlName = [
+  "/",
+  "/admin",
+  "/details",
+  "/delete",
+  "/controller",
+  "/edit",
+  "/create",
+];
 const server = http.createServer(async (req, res) => {
   let urlPathName = url.parse(req.url).pathname;
   const method = req.method;
@@ -57,6 +66,18 @@ const server = http.createServer(async (req, res) => {
 
       case urlName[4]:
         manager.showViewUserLogin(req, res, path[4]);
+        break;
+      case urlName[5]:
+        if (method == "GET") {
+          manager.viewEditUsers(req, res, path[4], index - 1);
+        } else {
+          manager.editUsers(req, res, index);
+        }
+        break;
+      case urlName[6]:
+        if (method == "GET") {
+          manager.showFormCreate(req, res, path[5]);
+        }
         break;
     }
   }

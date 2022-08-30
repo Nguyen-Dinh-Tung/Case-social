@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/asset/css/create.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="app">
+      <div class="nav">Tạo tài khoản</div>
+      <a href="/controller"
+        ><button class="btn-primary" type="submit">Hủy</button></a
+      >
+      <div class="form-create">
+        <form action="/create" method="post">
+          <div>
+            <label for="">Họ và tên</label>
+            <input type="text" name="full-name" />
+          </div>
+          <div>
+            <label for="">Tuổi</label>
+            <input type="number" name="age" />
+          </div>
+          <div>
+            <label for="">Địa chỉ</label> <input type="text" name="address" />
+          </div>
+          <div>
+            <label for="">Tên lớp</label> <input type="text" name="class" />
+          </div>
+          <div>
+            <label for="">Tên đăng nhập</label>
+            <input type="text" name="users" />
+          </div>
+          <div>
+            <label for="">Mật khẩu</label> <input type="password" name="pass" />
+          </div>
+          <div class="form-option">
+            <label for="">Loại tài khoản</label>
+            <select name="role" class="option">
+              <option value="1">admin</option>
+              <option value="1">users</option>
+            </select>
+          </div>
+          <button type="reset" class="btn-primary loat-left">Reset</button>
+          <div class="form-reset">
+            <button type="submit" class="btn-reset">Tạo</button>
+          </div>
+        </form>
+      </div>
+      <div class="nav nav-bottom"></div>
+      <div class="nav nav-footer">Case study moduble 3</div>
+    </div>
+  </body>
+</html>

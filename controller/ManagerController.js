@@ -49,8 +49,8 @@ class ManagerController {
         data += chunk;
       });
       req.on("end", () => {
-        let users = qs.parse(data);
-        resolve(users);
+        let dataHtml = qs.parse(data);
+        resolve(dataHtml);
       });
     });
   }
@@ -132,36 +132,88 @@ class ManagerController {
     res.writeHead(301, {location: path});
     res.end();
   }
-  async deleteStudents(req, res, index) {
-    let viewMangerStudents = await mySql.getViewStudents();
-    viewMangerStudents.splice(index, 1);
-    res.writeHead(301, {location: "/admin"});
-    res.end();
-  }
+  // async deleteStudents(req, res, index) {
+  //   mySql.deleteDataLogin(index);
+  //   res.writeHead(301, {location: "/controller"});
+  //   res.end();
+  // }
 
   async showViewUserLogin(req, res, path) {
     let html = "";
     let viewMangerStudents = await mySql.getViewLogin();
     viewMangerStudents.forEach((element) => {
-      let classicfy = "";
-      if (element.avg <= 5) {
-        classicfy = "Kém";
-      } else if (element.avg >= 5 && element.avg <= 7) {
-        classicfy = "Khá";
-      } else {
-        classicfy = "Giỏi";
-      }
       html += `
             <tr>
             <td>${element.id}</td>
             <td>${element.users}</td>
             <td>${element.pass}</td>
-            <td><a href="/delete?${element.id}"><button class="btn-fromManager" type="submit">Xóa</button></a></td>
+            <td><a href="/details?${element.id}" ><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
             <td><a href="/edit?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
             </tr>
             `;
     });
     this.getTemplateLogin(req, res, path, html);
+  }
+  async viewEditUsers(req, res, path, index) {
+    let htmls = "";
+    let viewMangerStudents = await mySql.getViewLogin();
+    viewMangerStudents.forEach((element) => {
+      htmls += `
+            <tr>
+            <td>${element.id}</td>
+            <td>${element.users}</td>
+            <td>${element.pass}</td>
+            <td><a href="/details?${element.id}" ><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
+            <td><a href="/edit?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
+            </tr>
+            `;
+    });
+    fs.readFile(path, "utf-8", (err, data) => {
+      if (err) {
+        throw Error(err.message);
+      }
+      let html = "";
+      html += `
+      <form method="post">
+      <input
+        type="text"
+        name="users"
+        id="users"
+        value="${viewMangerStudents[index].users}"
+        placeholder="Tên đăng nhập"
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        value="${viewMangerStudents[index].pass}"
+        placeholder="Mật khẩu"
+        required
+      />
+      <button>Sửa</button>
+    </form>`;
+      data = data.replace("{change}", htmls);
+      data = data.replace("Click vào tài khoản cần thay đổi", html);
+      res.write(data);
+      res.end();
+    });
+  }
+  async editUsers(req, res, index) {
+    let dataForm = await this.getDataReq(req, res);
+    mySql.editDataLogin(dataForm, index);
+    res.writeHead(301, {location: "/controller"});
+    res.end();
+  }
+  showFormCreate(req, res, path) {
+    fs.readFile(path, "utf-8", (err, data) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      res.writeHead(200, {"content-type": "text/html"});
+      res.write(data);
+      res.end();
+    });
   }
 }
 

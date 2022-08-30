@@ -15,7 +15,14 @@
   line-height: 68px;
   font-size: 30px;
 }
-
+.nav-bottom{
+  height: 50px;
+  background-color: white;
+}
+.nav-footer{
+  background-color: rgb(94, 185, 185);
+  color: white;
+}
 .score{
   display: flex;
   justify-content: center;
@@ -67,7 +74,7 @@
   top: 0;
   left: 0;
 }
-.btn-primary:hover ,.btn-fromManager:hover{
+.btn-primary:hover ,.btn-fromManager:hover ,.btn-reset:hover{
   cursor: pointer;
   background-color: rgb(121, 121, 103);
 }
@@ -98,4 +105,49 @@
 }
 .edit button:hover{
   background-color: rgb(121, 121, 103);
+}
+.form-create div input , label{
+  display: block;
+  width: 800px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 20px;
+  margin: auto;
+}
+.form-create{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 72px;
+  background-color: azure;
+}
+.app{
+  background-color: azure;
+}
+.option{
+  height: 40px;
+  width: 160px;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  background-color:rgb(116, 212, 212);
+}
+.form-option{
+  text-align: center;
+}
+.form-reset{
+  text-align: center;
+  margin: 18px;
+}
+.btn-reset{
+  width: calc(100%/7);
+  height: 68px;
+  font-size: 22px;
+  background-color: rgb(49, 116, 116);
+  border-radius: 6px;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
