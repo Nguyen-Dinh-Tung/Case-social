@@ -63,6 +63,10 @@
   border-radius: 6px;
   color: white;
 }
+.loat-left{
+  top: 0;
+  left: 0;
+}
 .btn-primary:hover ,.btn-fromManager:hover{
   cursor: pointer;
   background-color: rgb(121, 121, 103);

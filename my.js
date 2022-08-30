@@ -4,7 +4,6 @@ const qs = require("qs");
 const port = 3000;
 const host = "localhost";
 const url = require("url");
-const cookie = require("cookie");
 const escapeHtml = require("escape-html");
 const {type} = require("os");
 const ManagerController = require("./controller/ManagerController");
@@ -26,10 +25,10 @@ const path = [
   "./src/views/students.html",
   "./src/views/manager.html",
   "./src/views/details.html",
+  "./src/views/controller.html",
 ];
-
-const urlName = ["/", "/details", "/delete", "/admin", "/users"];
-const server = http.createServer((req, res) => {
+const urlName = ["/", "/admin", "/details", "/delete", "/controller"];
+const server = http.createServer(async (req, res) => {
   let urlPathName = url.parse(req.url).pathname;
   const method = req.method;
   let index = url.parse(req.url).query;
@@ -49,11 +48,15 @@ const server = http.createServer((req, res) => {
           manager.login(req, res, path[1], path[2]);
         }
         break;
-      case urlName[2]:
-        manager.deleteStudents(req, res, index);
-        break;
       case urlName[1]:
-        manager.viewUsers(req, res, path[3], index - 1);
+        manager.viewAdmin(req, res, path[2]);
+        break;
+      case urlName[2]:
+        manager.viewUsers(req, res, path[3], index);
+        break;
+
+      case urlName[4]:
+        manager.showViewUserLogin(req, res, path[4]);
         break;
     }
   }
