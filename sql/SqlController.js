@@ -25,7 +25,7 @@ class SqlController {
   }
   getViewStudents() {
     return new Promise((resolve, reject) => {
-      const sql = `select * from managerStudents`;
+      const sql = `select * from managerstudents`;
       this.connectionDatabase().query(sql, (err, result) => {
         if (err) {
           reject(err.message);
@@ -150,6 +150,35 @@ class SqlController {
         }
         resolve(result);
       });
+    });
+  }
+  getViewManagerStudent() {
+    const sql = `select * from managerstudents`;
+    return new Promise((resolve, reject) => {
+      this.connectionDatabase().query(sql, (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(result);
+      });
+    });
+  }
+  editFromStudents(name, age, id) {
+    const sql = `update students set name = '${name}' , age = ${age} where id = ${id}`;
+    this.connectionDatabase().query(sql, (err) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      console.log("Update Success");
+    });
+  }
+  editFromClass(className, id) {
+    const sql = `update class set name = '${className}' where id = ${id}`;
+    this.connectionDatabase().query(sql, (err) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      console.log("Update Success");
     });
   }
 }

@@ -94,7 +94,7 @@ class ManagerController {
             <td>${classicfy}</td>
             <td><a href="/details?${element.id}"><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
             <td><a href="/delete?${element.id}"><button class="btn-fromManager" type="submit">Xóa</button></a></td>
-            <td><a href="/edit?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
+            <td><a href="/edit-details?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
             </tr>
             `;
     });
@@ -219,6 +219,38 @@ class ManagerController {
     let dataForm = await this.getDataReq(req, res);
     mySql.createNewInfoStudents(dataForm);
     res.writeHead(301, {location: "/controller"});
+    res.end();
+  }
+  async showEditDetails(req, res, path, index) {
+    let viewMangerStudents = await mySql.getViewManagerStudent();
+    let html = "";
+    fs.readFile(path, "utf-8", (err, data) => {
+      viewMangerStudents.forEach((element, id) => {
+        if (element.id == index) {
+          html = `<tr>
+          <form method="post">
+            <td><input class="input-edit-details" name="name" value="${element.name}" type="text" /></td>
+            <td><input class="input-edit-details" name="age" value="${element.age}" type="text" /></td>
+            <td><input class="input-edit-details" name="className" value="${element.className}" type="text" /></td>
+            <td><button type="submit" class="btn-fromManager">Sửa</button></td>
+            </form>
+          </tr>`;
+          return;
+        }
+      });
+      data = data.replace("{change}", html);
+      res.write(data);
+      res.end();
+    });
+  }
+  async editDetails(req, res, path, index) {
+    let dataForm = await this.getDataReq(req, res);
+    let name = dataForm.name;
+    let age = dataForm.age;
+    let className = dataForm.className;
+    mySql.editFromStudents(name, age, index);
+    mySql.editFromClass(className, index);
+    res.writeHead(301, {location: "/admin"});
     res.end();
   }
 }

@@ -27,6 +27,7 @@ const path = [
   "./src/views/details.html",
   "./src/views/controller.html",
   "./src/views/create.html",
+  "./src/views/edit.html",
 ];
 const urlName = [
   "/",
@@ -36,6 +37,7 @@ const urlName = [
   "/controller",
   "/edit",
   "/create",
+  "/edit-details",
 ];
 const server = http.createServer(async (req, res) => {
   let urlPathName = url.parse(req.url).pathname;
@@ -79,6 +81,13 @@ const server = http.createServer(async (req, res) => {
           manager.showFormCreate(req, res, path[5]);
         } else {
           manager.createUsers(req, res);
+        }
+        break;
+      case urlName[7]:
+        if (method == "GET") {
+          manager.showEditDetails(req, res, path[6], index);
+        } else {
+          manager.editDetails(req, res, path[6], index);
         }
         break;
     }

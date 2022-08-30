@@ -123,3 +123,9 @@
   background-color: rgb(49, 116, 116);
   cursor: pointer;
 }
+.input-edit-details{
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  padding-left: 6px;
+}
