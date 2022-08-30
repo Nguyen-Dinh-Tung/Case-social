@@ -99,3 +99,27 @@
 .edit button:hover{
   background-color: rgb(121, 121, 103);
 }
+.chat{
+  position: fixed;
+  right: 0;
+}
+.input-message{
+  width: 274px;
+  height: 40px;
+  font-size: 16px;
+  padding-left: 6px;
+  outline: none;
+  border: none;
+  background: aquamarine;
+  border-radius: 6px;
+}
+.btn-message{
+  width: 108px;
+  height: 40px;
+  border: none;
+  font-size: 16px;
+}
+.btn-message:hover{
+  background-color: rgb(49, 116, 116);
+  cursor: pointer;
+}

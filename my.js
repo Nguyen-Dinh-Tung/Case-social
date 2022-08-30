@@ -77,6 +77,8 @@ const server = http.createServer(async (req, res) => {
       case urlName[6]:
         if (method == "GET") {
           manager.showFormCreate(req, res, path[5]);
+        } else {
+          manager.createUsers(req, res);
         }
         break;
     }

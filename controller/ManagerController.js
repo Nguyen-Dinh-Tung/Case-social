@@ -215,6 +215,12 @@ class ManagerController {
       res.end();
     });
   }
+  async createUsers(req, res) {
+    let dataForm = await this.getDataReq(req, res);
+    mySql.createNewInfoStudents(dataForm);
+    res.writeHead(301, {location: "/controller"});
+    res.end();
+  }
 }
 
 module.exports = ManagerController;
