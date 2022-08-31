@@ -40,6 +40,8 @@ const urlName = [
   "/create",
   "/edit-details",
   "/edit-details-scores",
+  "/delete",
+  "/search",
 ];
 const server = http.createServer(async (req, res) => {
   let urlPathName = url.parse(req.url).pathname;
@@ -100,6 +102,12 @@ const server = http.createServer(async (req, res) => {
         } else {
           manager.editScoreStudents(req, res, index);
         }
+        break;
+      case urlName[9]:
+        manager.deleteStudents(req, res, index);
+        break;
+      case urlName[10]:
+        manager.searchUser(req, res);
         break;
     }
   }

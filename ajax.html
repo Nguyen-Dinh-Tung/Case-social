@@ -1,0 +1,36 @@
+<meta charset="utf-8" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+/>
+<div class="col-5 mx-auto border border-primary px-4 py-2 mt-4">
+  <form name="frm1">
+    <div class="form-group">
+      <label>Username</label>
+      <input name="u" class="form-control bg-secondary text-white" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        name="p"
+        type="password"
+        class="form-control bg-secondary text-white"
+      />
+    </div>
+    <div class="form-group">
+      <button id="btn1" type="button" class="btn btn-primary">Đăng nhập</button>
+    </div>
+    <div id="kq" class="alert alert-warning text-center"></div>
+  </form>
+</div>
+<script>
+  $(document).ready(function () {
+    $("#btn1").click(function () {
+      var d = $("[name='frm1']").serialize();
+      $.post("http://localhost:3000/admin", d, function (data) {
+        $("#kq").html(data);
+      });
+    });
+  });
+</script>

@@ -129,3 +129,11 @@
   font-size: 18px;
   padding-left: 6px;
 }
+#search{
+  width: 400px;
+  height: 40px;
+  padding-left: 12px;
+  font-size: 18px;
+  border: none;
+  outline: none;
+}

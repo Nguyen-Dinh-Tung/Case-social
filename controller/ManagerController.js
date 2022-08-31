@@ -327,6 +327,27 @@ class ManagerController {
     res.writeHead(301, {location: `/details?${index}`});
     res.end();
   }
+  deleteStudents(req, res, index) {
+    let id = Number(index);
+    mySql.deleteStudents(id);
+    res.writeHead(301, {location: "/admin"});
+    res.end();
+  }
+  async searchUser(req, res) {
+    let data = await this.getDataReq(req, res);
+    let dataSql = await mySql.getViewManagerStudent();
+    let dataSendClient = [];
+    console.log(data.keydown);
+    dataSql.forEach((element) => {
+      if (
+        element.name.toLowerCase().includes(data.keydown.toLowerCase()) == true
+      ) {
+        dataSendClient.push(element);
+      }
+    });
+
+    res.end(JSON.stringify(dataSendClient));
+  }
 }
 
 module.exports = ManagerController;

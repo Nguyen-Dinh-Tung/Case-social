@@ -5,7 +5,7 @@ class SqlController {
       host: "localhost",
       user: "root",
       password: "123123",
-      database: "students",
+      database: "students_db",
     });
 
     connection.connect();
@@ -189,6 +189,24 @@ class SqlController {
         throw new Error(err.message);
       }
       console.log("Update Success");
+    });
+  }
+  deleteStudents(index) {
+    let classs = `delete from class where id = ${index}`;
+    let students = `delete from students where id = ${index}`;
+    let login = `delete from login where id = ${index}`;
+    let scores = `delete from scores where id = ${index}`;
+    this.sqlDelete(classs);
+    this.sqlDelete(students);
+    this.sqlDelete(login);
+    this.sqlDelete(scores);
+  }
+  sqlDelete(sql) {
+    this.connectionDatabase().query(sql, (err) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      console.log("Delte Success");
     });
   }
 }
