@@ -9,28 +9,28 @@
   </head>
   <body>
     <div class="app">
-      <a href="/controller"
-        ><button class="btn-primary loat-left" type="submit">
-          Quản lý tài khoản
-        </button></a
-      >
-      <div class="nav">Quản lý học sinh</div>
+      <div class="nav">Bảng điểm thi</div>
       <table class="score">
         <thead class="description">
           <tr>
-            <th class="subject">STT</th>
-            <th class="subject-name">Tên</th>
-            <th class="subject-name">Tuổi</th>
-            <th class="subject-name">Địa chỉ</th>
+            <th class="subject-name">Họ tên</th>
+            <th class="subject-name">Toán</th>
+            <th class="subject-name">Lý</th>
+            <th class="subject-name">Hóa</th>
+            <th class="subject-name">Tổng Kết</th>
             <th class="subject-name avg-score">Xếp loại</th>
-            <th class="subject-name">Điểm thi</th>
+            <th class="subject-name"></th>
           </tr>
         </thead>
         <tbody class="details">
-          {change}
+          <tr>
+            {change}
+          </tr>
         </tbody>
       </table>
-      <a href="/"><button class="btn-primary" type="submit">Thoát</button></a>
+      <a href="/admin"
+        ><button class="btn-primary" type="submit">Trở lại</button></a
+      >
     </div>
   </body>
 </html>

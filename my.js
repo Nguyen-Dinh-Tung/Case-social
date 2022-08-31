@@ -28,6 +28,7 @@ const path = [
   "./src/views/controller.html",
   "./src/views/create.html",
   "./src/views/edit.html",
+  "./src/views/edit.score.html",
 ];
 const urlName = [
   "/",
@@ -38,6 +39,7 @@ const urlName = [
   "/edit",
   "/create",
   "/edit-details",
+  "/edit-details-scores",
 ];
 const server = http.createServer(async (req, res) => {
   let urlPathName = url.parse(req.url).pathname;
@@ -63,7 +65,9 @@ const server = http.createServer(async (req, res) => {
         manager.viewAdmin(req, res, path[2]);
         break;
       case urlName[2]:
-        manager.viewUsers(req, res, path[3], index);
+        if (method == "GET") {
+          manager.viewUsersManager(req, res, path[3], index);
+        }
         break;
 
       case urlName[4]:
@@ -88,6 +92,13 @@ const server = http.createServer(async (req, res) => {
           manager.showEditDetails(req, res, path[6], index);
         } else {
           manager.editDetails(req, res, path[6], index);
+        }
+        break;
+      case urlName[8]:
+        if (method == "GET") {
+          manager.showViewEditScore(req, res, path[7], index);
+        } else {
+          manager.editScoreStudents(req, res, index);
         }
         break;
     }

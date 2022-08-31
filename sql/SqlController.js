@@ -5,7 +5,7 @@ class SqlController {
       host: "localhost",
       user: "root",
       password: "123123",
-      database: "students_db",
+      database: "students",
     });
 
     connection.connect();
@@ -174,6 +174,16 @@ class SqlController {
   }
   editFromClass(className, id) {
     const sql = `update class set name = '${className}' where id = ${id}`;
+    this.connectionDatabase().query(sql, (err) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      console.log("Update Success");
+    });
+  }
+  editScoreStudents(math, physic, chemistry, id) {
+    let avg = (math + physic + chemistry) / 3;
+    const sql = `update scores set math = ${math} , physic = ${physic} , chemistry = ${physic}  , avg = ${avg} where id = ${id}`;
     this.connectionDatabase().query(sql, (err) => {
       if (err) {
         throw new Error(err.message);

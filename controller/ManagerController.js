@@ -128,16 +128,39 @@ class ManagerController {
       }
     });
   }
+  async viewUsersManager(req, res, pathUsers, id) {
+    let html = "";
+    let viewMangerStudents = await mySql.getViewStudents();
+    viewMangerStudents.forEach((element) => {
+      if (element.id == id) {
+        let classicfy = "";
+        let scoreAvg = Math.floor(element.avg);
+        if (scoreAvg <= 5) {
+          classicfy = "Kém";
+        } else if (scoreAvg >= 5 && scoreAvg <= 7) {
+          classicfy = "Khá";
+        } else {
+          classicfy = "Giỏi";
+        }
+        html += `
+        <tr>
+        <td>${element.name}</td>
+        <td>${element.math}</td>
+        <td>${element.physic}</td>
+        <td>${element.chemistry}</td>
+        <td>${element.avg}</td>
+        <td>${classicfy}</td>
+        <td><a href="/edit-details-scores?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
+        </tr>
+        `;
+        this.getTemplateLogin(req, res, pathUsers, html);
+      }
+    });
+  }
   locationView(req, res, path) {
     res.writeHead(301, {location: path});
     res.end();
   }
-  // async deleteStudents(req, res, index) {
-  //   mySql.deleteDataLogin(index);
-  //   res.writeHead(301, {location: "/controller"});
-  //   res.end();
-  // }
-
   async showViewUserLogin(req, res, path) {
     let html = "";
     let viewMangerStudents = await mySql.getViewLogin();
@@ -251,6 +274,57 @@ class ManagerController {
     mySql.editFromStudents(name, age, index);
     mySql.editFromClass(className, index);
     res.writeHead(301, {location: "/admin"});
+    res.end();
+  }
+  async showViewEditScore(req, res, path, index) {
+    let html = "";
+    let viewMangerStudents = await mySql.getViewManagerStudent();
+    viewMangerStudents.forEach((element) => {
+      if (element.id == index) {
+        html = `
+        <form action="" method="post" class="form-edit-score">
+        <input
+          type="number"
+          class="input-edit-scores"
+          name="math"
+          value="${element.math}"
+          placeholder="Toán"
+        />
+        <input
+          type="number"
+          class="input-edit-scores"
+          name="physic"
+          value="${element.physic}"
+          placeholder="Lý"
+        />
+        <input
+          type="number"
+          class="input-edit-scores"
+          name="chemistry"
+          value="${element.chemistry}"
+          placeholder="Hóa"
+        />
+        <button type="submit" class="btn-edit-scores">Sửa</button>
+      </form>
+        `;
+      }
+    });
+    fs.readFile(path, "utf-8", (err, data) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      data = data.replace("{change}", html);
+      res.write(data);
+      res.end();
+    });
+  }
+  async editScoreStudents(req, res, index) {
+    let data = await this.getDataReq(req, res);
+    let math = Number(data.math);
+    let physic = Number(data.physic);
+    let chemistry = Number(data.chemistry);
+    mySql.editScoreStudents(math, physic, chemistry, index);
+    res.writeHead(301, {location: `/details?${index}`});
     res.end();
   }
 }
