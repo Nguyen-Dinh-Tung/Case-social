@@ -9,6 +9,7 @@ const {type} = require("os");
 const ManagerController = require("./controller/ManagerController");
 const manager = new ManagerController();
 const {Server} = require("socket.io");
+const UsersChat = require("./controller/UsersChat");
 let mimeTypes = {
   jpg: "images/jpg",
   png: "images/png",
@@ -77,7 +78,7 @@ const server = http.createServer(async (req, res) => {
         break;
       case urlName[5]:
         if (method == "GET") {
-          manager.viewEditUsers(req, res, path[4], index - 1);
+          manager.viewEditUsers(req, res, path[4], index);
         } else {
           manager.editUsers(req, res, index);
         }
@@ -114,5 +115,35 @@ const server = http.createServer(async (req, res) => {
 });
 server.listen(port, host);
 const io = new Server(server);
-
-io.on("connection", (socket) => {});
+let infoLogin = [];
+io.on("connection", (socket) => {
+  let data = {
+    id: socket.id,
+    usersLogin: this.usersLogin,
+    idRoom: this.idRoom,
+  };
+  socket.join(socket.id);
+  socket.on("login", (usersLogin) => {
+    data.usersLogin = usersLogin;
+    infoLogin.push(data);
+  });
+  socket.on("search users", (dataSearch) => {
+    infoLogin.forEach((element) => {
+      if (dataSearch.usersSearch == element.usersLogin) {
+        data.idRoom = element.id;
+        socket.join(element.id);
+        socket.emit("id room", element.id);
+      }
+    });
+  });
+  socket.on("on-chat", (dataMessage) => {
+    io.to(dataMessage.idRoom).emit("chat", dataMessage);
+  });
+  socket.on("disconnect", () => {
+    for (let i = 0; i < infoLogin.length; i++) {
+      if (infoLogin[i].usersLogin == data.usersLogin) {
+        infoLogin.splice(i, 1);
+      }
+    }
+  });
+});

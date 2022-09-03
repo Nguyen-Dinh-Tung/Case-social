@@ -163,8 +163,8 @@ class SqlController {
       });
     });
   }
-  editFromStudents(name, age, id) {
-    const sql = `update students set name = '${name}' , age = ${age} where id = ${id}`;
+  editFromStudents(name, age, address, id) {
+    const sql = `update students set name = '${name}' , age = ${age} , address = '${address}' where id = ${id}`;
     this.connectionDatabase().query(sql, (err) => {
       if (err) {
         throw new Error(err.message);

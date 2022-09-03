@@ -66,7 +66,7 @@ class ManagerController {
         } else {
           const setCookie = cookie.serialize("user", JSON.stringify(dataForm));
           res.setHeader("Set-cookie", setCookie);
-          this.viewUsers(req, res, pathUser, element.id);
+          this.viewUsers(req, res, pathUser, element.id, dataForm.users);
         }
       });
     } else {
@@ -91,6 +91,7 @@ class ManagerController {
             <td>${element.name}</td>
             <td>${element.age}</td>
             <td>${element.address}</td>
+            <td>${element.className}</td>
             <td>${classicfy}</td>
             <td><a href="/details?${element.id}"><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
             <td><a href="/delete?${element.id}"><button class="btn-fromManager" type="submit">Xóa</button></a></td>
@@ -100,9 +101,10 @@ class ManagerController {
     });
     this.getTemplateLogin(req, res, pathAdmin, html);
   }
-  async viewUsers(req, res, pathUsers, id) {
+  async viewUsers(req, res, pathUsers, id, userName) {
     let html = "";
     let viewMangerStudents = await mySql.getViewStudents();
+    let viewLogin = await mySql.getViewLogin();
     viewMangerStudents.forEach((element) => {
       if (element.id == id) {
         let classicfy = "";
@@ -123,6 +125,7 @@ class ManagerController {
         <td>${element.avg}</td>
         <td>${classicfy}</td>
         </tr>
+        <input type="text" name="my-user-name" class="my-user-name" value="${userName}" style="display: none" />
         `;
         this.getTemplateLogin(req, res, pathUsers, html);
       }
@@ -179,43 +182,48 @@ class ManagerController {
   }
   async viewEditUsers(req, res, path, index) {
     let htmls = "";
+    let html = "";
     let viewMangerStudents = await mySql.getViewLogin();
     viewMangerStudents.forEach((element) => {
       htmls += `
-            <tr>
-            <td>${element.id}</td>
-            <td>${element.users}</td>
-            <td>${element.pass}</td>
-            <td><a href="/details?${element.id}" ><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
-            <td><a href="/edit?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
-            </tr>
-            `;
+        <tr>
+        <td>${element.id}</td>
+        <td>${element.users}</td>
+        <td>${element.pass}</td>
+        <td><a href="/details?${element.id}" ><button class="btn-fromManager" type="submit">Xem chi tiết</button></a></td>
+        <td><a href="/edit?${element.id}"><button class="btn-fromManager" type="submit">Sửa</button></a></td>
+        </tr>
+        `;
+    });
+    viewMangerStudents.forEach((element) => {
+      if (index == element.id) {
+        html = `
+        <form method="post">
+        <input
+          type="text"
+          name="users"
+          id="users"
+          value="${element.users}"
+          placeholder="Tên đăng nhập"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          value="${element.pass}"
+          placeholder="Mật khẩu"
+          required
+        />
+        <button>Sửa</button>
+      </form>`;
+      }
     });
     fs.readFile(path, "utf-8", (err, data) => {
       if (err) {
         throw Error(err.message);
       }
-      let html = "";
-      html += `
-      <form method="post">
-      <input
-        type="text"
-        name="users"
-        id="users"
-        value="${viewMangerStudents[index].users}"
-        placeholder="Tên đăng nhập"
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value="${viewMangerStudents[index].pass}"
-        placeholder="Mật khẩu"
-        required
-      />
-      <button>Sửa</button>
-    </form>`;
+
       data = data.replace("{change}", htmls);
       data = data.replace("Click vào tài khoản cần thay đổi", html);
       res.write(data);
@@ -254,6 +262,7 @@ class ManagerController {
           <form method="post">
             <td><input class="input-edit-details" name="name" value="${element.name}" type="text" /></td>
             <td><input class="input-edit-details" name="age" value="${element.age}" type="text" /></td>
+            <td><input class="input-edit-details" name="address" value="${element.address}" type="text" /></td>
             <td><input class="input-edit-details" name="className" value="${element.className}" type="text" /></td>
             <td><button type="submit" class="btn-fromManager">Sửa</button></td>
             </form>
@@ -270,8 +279,10 @@ class ManagerController {
     let dataForm = await this.getDataReq(req, res);
     let name = dataForm.name;
     let age = dataForm.age;
+    let address = dataForm.address;
     let className = dataForm.className;
-    mySql.editFromStudents(name, age, index);
+    console.log(dataForm);
+    mySql.editFromStudents(name, age, address, index);
     mySql.editFromClass(className, index);
     res.writeHead(301, {location: "/admin"});
     res.end();
@@ -349,5 +360,4 @@ class ManagerController {
     res.end(JSON.stringify(dataSendClient));
   }
 }
-
 module.exports = ManagerController;

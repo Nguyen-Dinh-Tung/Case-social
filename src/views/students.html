@@ -29,17 +29,24 @@
       </table>
       <a href="/"><button class="btn-primary" type="submit">Thoát</button></a>
       <div class="chat">
-        <form action="" style="width: 422px">
-          <textarea name="chat" id="" cols="50" rows="48" disabled> </textarea>
-          <input
-            type="text"
-            name="message"
-            class="input-message"
-            placeholder="Nhập tin nhắn"
-          />
-          <button class="btn-message" type="submit">Gửi</button>
-        </form>
+        <input
+          type="text"
+          name="search-users-chat"
+          class="search-users-chat"
+          placeholder="Chát với ai ?"
+        />
+        <button class="btn-search-chat">Tìm kiếm</button>
+        <ul class="content-chat"></ul>
+        <button class="btn-send">Gửi</button>
+        <input
+          type="text"
+          name="search-users-chat"
+          class="message"
+          placeholder="Nhập tin nhắn"
+        />
       </div>
     </div>
   </body>
+  <script src="./socket.io/socket.io.js"></script>
+  <script src="/socket.io.js"></script>
 </html>
